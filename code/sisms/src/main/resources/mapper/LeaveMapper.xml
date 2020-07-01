@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nwpu.dao.IleaveDao">
+	<resultMap type="com.nwpu.model.Staff" id="staffMap">
+		<id property="staffID" column="staffID"/>
+		<result property="staffName" column="staffName" />
+		<result property="sex" column="sex" />
+		<result property="officeNumber" column="officeNumber" />
+		<result property="projectKind" column="projectKind" />
+		<result property="leaveDate" column="leaveDate" />
+		<result property="onJob" column="onJob" />
+	</resultMap>
+	
+	<resultMap type="com.nwpu.model.Staff" id="staffBorrowMap">
+		<id property="staffID" column="staffID" />
+		<result property="staffName" column="staffName" />
+		<result property="sex" column="sex" />
+		<result property="officeNumber" column="officeNumber" />
+		<result property="projectKind" column="projectKind" />
+		<result property="leaveDate" column="leaveDate" />
+		<result property="onJob" column="onJob" />
+		<collection property="project" ofType="com.nwpu.model.Project">
+			<id property="projectID" column="projectID" />
+			<result property="projectName" column="projectName" />
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.nwpu.model.StaffRecord" id="BaseResultMap">
+		<id property="payNumber" column="payNumber" />
+		<result property="staffName" column="staffName" />
+		<result property="staffID" column="staffID" />
+		<result property="payKind" column="payKind" />
+		<result property="payPrice" column="payPrice" />
+		<result property="deadline" column="deadline" />
+		<result property="payDate" column="payDate" ></result>
+		<result property="isPay" column="isPay" />
+	</resultMap>
+	
+	<select id="queryStaff" parameterType="String" resultMap="staffMap">
+		SELECT * FROM staff WHERE leaveDate=#{leave} AND isAdmin is false
+	</select>
+	
+	<select id="queryBorrow" resultMap="staffBorrowMap">
+		select * from staff s inner join project b on s.staffID = b.staffID where leaveDate=#{leave}
+	</select>
+	
+	<select id="queryStaffByID" parameterType="String" resultMap="staffMap">
+		SELECT * FROM staff WHERE staffID=#{staffID}
+	</select>
+	
+	<select id="queryBorrowByID" parameterType="String" resultMap="staffBorrowMap">
+		select * from staff s inner join project b on s.staffID = b.staffID where s.staffID=#{staffID}
+	</select>
+	
+	<select id="queryRecordByID" parameterType="String" resultMap="BaseResultMap">
+		select * from
+		money where staffID=#{staffID} AND isPay is false
+	</select>
+	
+	<select id="queryStaffBystaffName" parameterType="String" resultMap="staffMap">
+		select * from staff where staffName like '%${arg0}%' and leaveDate=#{arg1}
+	</select>
+	
+	<select id="queryBorrowStaffBystaffName" parameterType="String" resultMap="staffBorrowMap">
+		select * from staff s inner join project b on s.staffID = b.staffID where staffName like '%${arg0}%' and leaveDate=#{arg1}
+	</select>
+</mapper>
+
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nwpu.dao.ApplicationDao">
+	<resultMap type="com.nwpu.model.Application" id="appMap">
+		<id property="appID" column="appID" />
+		<result property="Name" column="Name" />
+		<result property="sex" column="sex" />
+		<result property="identifyID" column="identifyID" />
+		<result property="officeNumber" column="officeNumber" />
+		<result property="projectKind" column="projectKind" />
+		<result property="groupID" column="groupID" />
+	</resultMap>
+	<insert id="entry" parameterType="String">
+		insert into staff (staffID,officeNumber,staffName,sex,identifyID,onJob,projectKind,isAdmin,leaveDate,groupID) 
+		values ('45878','74122','规律','女','14578',1,'实验室',0,'2021-9-11','003')
+	</insert>
+
+	<delete id="deny" parameterType="String">
+		delete from application where appID=#{appID} 
+	</delete>
+</mapper>

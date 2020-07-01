@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nwpu.dao.IOfficeDao">
+	<resultMap type="com.nwpu.model.Office" id="officeMap">
+		<id property="officeNumber" column="officeNumber" />
+		<result property="officeKind" column="officeKind" />
+		<result property="tableNumber" column="tableNumber"/>
+		<result property="type" column="type"/>
+	</resultMap>
+	
+	<resultMap type="com.nwpu.model.Staff" id="staffMap">
+		<id property="staffID" column="staffID" />
+		<result property="staffName" column="staffName" />
+		<result property="onJob" column="onJob" />
+		<association property="office" javaType="com.nwpu.model.Office">
+			<id property="officeNumber" column="officeNumber"/>
+			<result property="officeKind" column="officeKind" />
+		</association>
+	</resultMap>
+	
+	<resultMap type="com.nwpu.model.OfficeApplication" id="applyMap">
+		<id property="applyNumber" column="applyNumber" />
+		<result property="staffID" column="staffID"/>
+		<result property="applyKind" column="applyKind" />
+		<result property="other" column="other" />
+		<result property="status" column="status" />
+		<result property="date" column="date"/>
+	</resultMap>
+	
+	<resultMap type="com.nwpu.model.Staff" id="stuMap">
+		<id property="staffID" column="staffID" />
+		<result property="staffName" column="staffName" />
+		<result property="officeNumber" column="officeNumber" />
+	</resultMap>
+	
+	<!-- 添加宿舍 -->
+	<insert id="insertOffice" parameterType="com.nwpu.model.Office">
+		insert into office (officeNumber,officeKind,tableNumber,isFull,type) values (#{officeNumber},#{officeKind},#{tableNumber},#{isFull},#{type})
+	</insert>
+	
+	<!-- 查询所有宿舍 -->
+	<select id="selectOffice" resultMap="officeMap">
+		SELECT * FROM office WHERE officeNumber != "waitForSet" AND officeNumber != "0000"
+	</select>
+	
+	<delete id="deleteOffice" parameterType="String">
+		delete from office where officeNumber=#{officeNumber}
+	</delete>
+	
+	<select id="queryStaff" resultMap="staffMap">
+		SELECT s.staffID,s.staffName,d.officeNumber,d.officeKind,s.onJob FROM staff s,office d WHERE s.officeNumber=d.officeNumber
+	</select>
+	
+	<select id="queryApply" parameterType="String" resultMap="applyMap">
+		select staffID,applyNumber,applyKind,other,date,status from officeapplication where staffID=#{staffID}
+	</select>
+	
+	<insert id="insertApply" parameterType="com.nwpu.model.OfficeApplication">
+		insert into officeapplication (applyNumber,applyKind,date,other,staffID,status) values (#{applyNumber},#{applyKind},#{date},#{other},#{staffID},#{status})
+	</insert>
+	
+	<select id="queryStaffById" parameterType="String" resultMap="staffMap">
+		SELECT s.staffID,s.staffName,d.officeNumber,d.officeKind,s.onJob
+		FROM staff s inner join office d on s.officeNumber=d.officeNumber 
+		where staffID=#{staffID}
+	</select>
+	
+	<select id="getStaffById" parameterType="String" resultMap="stuMap">
+		select staffID,staffName,officeNumber from staff where staffID=#{staffID}
+	</select>
+	
+	<select id="queryStaffByDrom" parameterType="String" resultMap="stuMap">
+		select staffID,staffName,officeNumber from staff where officeNumber=#{officeNumber}
+	</select>
+	
+	<select id="queryOfficeByOfficeNumber" parameterType="String" resultMap="officeMap" >
+		select * from office where officeNumber=#{officeNumber}
+	</select>
+	
+	<update id="updateOffice" parameterType="com.nwpu.model.Office">
+		update office set officeKind=#{officeKind},tableNumber=#{tableNumber},type=#{type} where officeNumber=#{officeNumber}
+	</update>
+	
+	<update id="updateStaff" parameterType="com.nwpu.model.Staff">
+		update staff set officeNumber=#{officeNumber} where staffID=#{staffID}
+	</update>
+	
+	<select id="queryAllApply" resultMap="applyMap">
+		select * from officeapplication where status is false
+	</select>
+	
+	<update id="updateApply" parameterType="String">
+		update officeapplication set status=true where applyNumber=#{applyNumber}
+	</update>
+</mapper>

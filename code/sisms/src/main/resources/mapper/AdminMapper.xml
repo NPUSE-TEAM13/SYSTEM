@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nwpu.dao.IAdminDao">
+	<resultMap id = "adminMap" type="com.nwpu.model.Staff">
+		<id property="staffID" column="staffID" />
+		<result property="staffName" column="staffName" />
+		<result property="sex" column="sex" />
+		<result property="officeNumber" column="officeNumber" />
+	</resultMap>
+	
+	<select id="queryAdmin" resultMap="adminMap">
+		select staffID,staffName,sex,officeNumber from staff where isAdmin is true
+	</select>
+	
+	<insert id="insertAdmin" parameterType="com.nwpu.model.Staff">
+		insert into staff (staffID,staffName,sex,officeNumber,identifyID,isAdmin)
+		values 
+		(#{staffID},#{staffName},#{sex},#{officeNumber},#{identifyID},#{isAdmin})
+	</insert>
+	
+	<delete id="deleteAdmin" parameterType="String">
+		delete from staff where staffID=#{staffID}
+	</delete>
+	
+	<update id="subNotice" parameterType="String">
+		update notice set context=#{context} where noticeID="1501"
+	</update>
+</mapper>
+

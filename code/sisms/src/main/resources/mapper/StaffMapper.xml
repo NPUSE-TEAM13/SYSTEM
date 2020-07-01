@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nwpu.dao.IStaffDao">
+	<resultMap type="com.nwpu.model.Staff" id="staffMap">
+		<id property="staffID" column="staffID" />
+		<result property="staffName" column="staffName" />
+		<result property="sex" column="sex" />
+		<result property="identifyID" column="identifyID" />
+		<result property="officeNumber" column="officeNumber" />
+		<result property="officeNumber" column="officeNumber" />
+		<result property="projectKind" column="projectKind" />
+		<result property="groupID" column="groupID" />
+	</resultMap>
+	
+	<resultMap type="com.nwpu.model.Office" id="officeMap">
+		<id property="officeNumber" column="officeNumber" />
+		<result property="officeKind" column="officeKind" />
+	</resultMap>
+	
+	<!-- 查询所有学生 -->
+	<select id="queryStaff" resultMap="staffMap">
+		select * from staff where isAdmin=false
+	</select>
+	
+	<!-- 查询特定学生 by staffID -->
+	<select id="queryStaffBystaffID" parameterType="String" resultMap="staffMap">
+		select * from staff where staffID=#{staffID}
+	</select>
+	<!-- 查询特定学生 by staffName -->
+	<select id="queryStaffBystaffName" parameterType="String" resultMap="staffMap">
+		select * from staff where staffName like '%${_parameter}%'
+	</select>	
+	<!-- 插入学生 -->
+	<insert id="insertStaff" parameterType="com.nwpu.model.Staff">
+		insert into staff (staffID,staffName,officeNumber,sex,identifyID,projectKind,groupID,isAdmin,onJob,leaveDate) 
+		values 
+		(#{staffID},#{staffName},#{officeNumber},#{sex},#{identifyID},#{projectKind},#{groupID},#{isAdmin},#{onJob},#{leaveDate})
+	</insert>
+	<!-- 删除学生 -->
+	<delete id="deleteStaff" parameterType="String">
+		delete from staff where staffID=#{staffID} 
+	</delete>
+	
+	<!-- 更新学生 -->
+	<update id="updateStaff" parameterType="com.nwpu.model.Staff" >
+		update staff set staffID=#{staffID},staffName=#{staffName},officeNumber=#{officeNumber},
+		sex=#{sex},identifyID=#{identifyID},projectKind=#{projectKind}, groupID=#{groupID} where identifyID=#{identifyID}
+	</update>
+	
+	<select id="queryNewStaff" resultMap="staffMap">
+		SELECT * FROM staff WHERE isAdmin=FALSE AND officeNumber="waitForSet"
+	</select>
+	
+	<select id="queryMaleOffice" resultMap="officeMap">
+		SELECT * FROM office WHERE isFull IS FALSE and sex="男宿"
+	</select>
+	
+	<select id="queryFemaleOffice" resultMap="officeMap">
+		SELECT * FROM office WHERE isFull IS FALSE and sex="女宿"
+	</select>
+	
+	<select id="queryNewStaffFemale" resultMap="staffMap">
+		SELECT * FROM staff WHERE isAdmin=FALSE AND officeNumber="waitForSet" AND sex="女"
+	</select>
+	
+	<select id="queryNewStaffMale" resultMap="staffMap">
+		SELECT * FROM staff WHERE isAdmin=FALSE AND officeNumber="waitForSet" AND sex="男"
+	</select>
+	
+	<update id="updateOffice" parameterType="com.nwpu.model.Office">
+		update office set isFull = #{isFull} where officeNumber = #{officeNumber}
+	</update>
+</mapper>

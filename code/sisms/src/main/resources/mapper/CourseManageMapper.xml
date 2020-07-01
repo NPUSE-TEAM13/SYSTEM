@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nwpu.dao.CourseManageDao">
+
+	<resultMap type="com.nwpu.model.Course" id="courseMap">
+		<id property="courseNumber" column="courseNumber" />
+		<result property="courseName" column="courseName" />
+		<result property="number" column="number" />
+		<result property="length" column="length" />
+		<result property="auditing" column="auditing" />
+		<result property="requirment" column="requirment" />
+		<result property="providing" column="providing" />
+		<result property="semeter" column="semeter" />
+	</resultMap>
+	
+	<!-- 查询 -->
+	<select id="queryCourse" resultMap="courseMap">
+		select * from course
+	</select>
+	
+	<!-- 删除 -->
+	<delete id="deleteCourse" parameterType="String">
+		delete from course where courseNumber=#{courseNumber}
+	</delete>
+	
+	<!-- 添加 -->
+	<insert id="insertCourse" parameterType="com.nwpu.model.Course">
+		insert into course (courseNumber,courseName,number,length,auditing,requirment,providing,semeter) values 
+		(#{courseNumber},#{courseName},#{number},#{length},#{auditing},#{requirment},#{providing},#{semeter})
+	</insert>
+	
+	<!-- 查询某本教材 By courseNumber -->
+	<select id="queryCourseBycourseNumber" parameterType="String" resultMap="courseMap">
+		select * from course where courseNumber=#{courseNumber}
+	</select>
+	
+	<!-- 更新 -->
+	<update id="updateCourse" parameterType="com.nwpu.model.Course">
+		update course set courseName=#{courseName},number=#{number},length=#{length},auditing=#{auditing},
+		requirment=#{requirment},providing=#{providing},semeter=#{semeter} where courseNumber=#{courseNumber}
+	</update>
+	
+	<!-- 模糊查询教材 by courseName -->
+	<select id="queryCourseByCourseName" parameterType="String"  resultMap="courseMap">
+		select * from course where courseName like '%${_parameter}%'
+	</select>
+	
+</mapper>

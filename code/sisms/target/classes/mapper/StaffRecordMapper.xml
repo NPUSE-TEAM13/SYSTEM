@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nwpu.dao.StaffRecordDao">
+	<resultMap type="com.nwpu.model.StaffRecord" id="BaseResultMap">
+		<id property="payNumber" column="payNumber" />
+		<result property="staffName" column="staffName" />
+		<result property="staffID" column="staffID" />
+		<result property="payKind" column="payKind" />
+		<result property="payPrice" column="payPrice" />
+		<result property="deadline" column="deadline" />
+		<result property="payDate" column="payDate" />
+		<result property="isPay" column="isPay" />
+	</resultMap>
+
+	<!-- 查询： 集合 -->
+	<select id="getStaffRecordList" parameterType="String" resultMap="BaseResultMap">
+		select * from
+		money where staffID=#{staffID}
+	</select>
+	
+	<select id="getStaffRecordListAll" resultMap="BaseResultMap">
+		select * from
+		money
+	</select>
+
+	<!-- 根据学生学号查询交易记录 -->
+	<select id="queryStaffRecordByStaffId" resultMap="BaseResultMap">
+		select *
+		from money where staffID = #{check}
+	</select>
+	
+	<!--  更新  -->
+	<update id="updateStaffRecordByKey" >
+		update money 
+		set isPay = 1, payDate = now() 
+		where payNumber = #{key}
+	</update>
+	
+	<!--  插入  -->
+	<insert id="insertStaffRecord">
+		INSERT INTO money
+		(payNumber,staffID, staffName, 	
+		payKind, payPrice, deadline, 
+		payDate, isPay) 
+		VALUES 
+		(#{payNumber},#{staffID},#{staffName}, 
+		#{payKind}, #{payPrice}, #{deadline},
+		null, 0)
+	</insert>
+	
+	<select id="queryStaffNameByID" parameterType="String" resultType="String">
+		select staffName from staff where staffID=#{staffID}
+	</select>
+	
+</mapper>
