@@ -1,0 +1,980 @@
+
+
+SISMS职员信息服务管理系统
+
+需求规格说明	
+
+
+
+
+
+
+
+许卓 王子益 邓子凡 任卓力 高志扬
+2020-6-27
+
+
+目录
+1.功能设计	4
+1.1功能简介	4
+（2）实现职员入职数字化管理	5
+（3）实现职员财务管理数字化	5
+（4）新员工报到管理	5
+（5）宿舍管理系统升级改造	6
+（6）专业培训管理	6
+（7）离职审核	7
+（8）职工综合服务管理系统门户	7
+2.流程设计	9
+3.数据流图	10
+4.数据字典	11
+5.状态转换图	13
+6.界面设计	14
+6.1 总体风格与页面组织	14
+6.1.1登录欢迎页	14
+6.1.2系统主页	14
+6.1.3基本信息管理页面	15
+6.1.4信息编辑页面	16
+6.1.5其他页面	16
+7.数据库设计	16
+7.1 概念结构设计	16
+7.2 逻辑结构设计	17
+7.3 数据库实施	18
+7.3.1 Staff员工实体类	18
+7.3.1.1空构造函数	18
+7.3.1.2带参数的构造函数	19
+7.3.1.3获取员工各项参数	20
+7.3.1.4 设置员工各项参数	20
+7.3.2 Office办公室实体类	21
+7.3.2.1空构造函数	21
+7.3.2.2带参数的构造函数	21
+7.3.2.3获取办公室各项参数	22
+7.3.2.4 设置办公室各项参数	22
+7.3.3 OfficeApplication办公室申请实体类	23
+7.3.3.1 空构造函数	23
+7.3.3.2 带参数的构造函数	23
+7.3.3.3 获取办公室申请各项参数	23
+7.3.3.4 设置办公室申请各项参数	24
+7.3.4 StaffRecord资金流水实体类	24
+7.3.4.1 空构造函数	24
+7.3.4.2 带参的构造函数	25
+7.3.4.3 获取资金流水各项参数	25
+7.3.4.4 设置资金流水各项参数	26
+7.3.7 Course培训用户实体类	26
+7.3.7.1空构造函数	26
+7.3.7.2带参数的构造函数	26
+7.3.7.3获取培训各项参数	27
+7.3.7.4 设置培训各项参数	28
+7.3.6 Project项目实体类	28
+7.3.6.1 空构造函数	28
+7.3.6.2 带参数的构造函数	28
+7.3.6.3 获取项目各项参数	29
+7.3.6.4 设置项目各项参数	29
+7.3.6.1 空构造函数	29
+7.3.6.2 带参数的构造函数	30
+7.3.6.3 获取项目各项参数	30
+7.3.6.4 设置项目各项参数	30
+8.接口设计	31
+8.1 查询课程	31
+8.2 增加培训课程	31
+8.3 删除培训课程	31
+8.4 更新培训课程	32
+8.5 按编号查询培训课程	32
+8.6 按名称查询培训课程	32
+8.7 查询员工离职日期	32
+8.8 查询员工借阅目录	33
+8.9 查询员工离职日期	33
+8.10 按ID查询职员	33
+8.11 按ID查询职员借阅目录	33
+8.12 按ID查询职员借阅记录	33
+8.13 按姓名查询职员	34
+8.14 按姓名查询职员借阅记录	34
+8.15 新增管理员	34
+8.16 删除管理员	34
+8.17 查询管理员	35
+8.18 获取用户信息	35
+8.19 获取公告	35
+8.20 登录并获取密码	35
+8.21 更新培训课程	36
+8.22 新增办公室	36
+8.23 选择办公室	36
+8.24 删除办公室	36
+8.25 按办公室号获取办公室	36
+8.26 按办公室号获取员工列表	37
+8.27 按ID获取员工	37
+8.28 新增申请	37
+8.29 查询申请	37
+8.30 更新办公室信息	38
+8.31 查询所有申请	38
+8.32 更新申请	38
+8.33 获取员工记录	38
+8.34 根据员工号查询交易记录	38
+8.35将缴费添加到交易记录	39
+9.算法设计	39
+9.1员工宿舍收费计算	39
+
+
+1.功能设计
+1.1功能简介
+“SISMS职员信息服务管理系统”是公司管理高效化、现代化重要部分，主要从公司员工管理工作出发、涵盖了职员信息电子化管理、职员入职管理、宿舍管理、技能培训管理、奖惩管理、离职管理等方面。利用本系统可以达到日常工作的无纸化办公、并为公司职员管理工作带来便利。同时，信息的电子化管理为日后的信息统计、信息查看提供强有力的保障。主要从以下业务应用进行了分析：
+（1）为实现职员信息电子化
+提供公司系统之间基本的数据交换，加强数据库之间的数据联系。保障公司的员工的信息与人事系统保持一致。为满足这一目标需求，从两个方面进行分析：
+	实现职员信息电子化，需建立“公司职员管理系统”统一的数据存储、处理中心，数据中心负责各子系统所有数据的集中存储、更新、备份、维护；数据的分类、检索等。
+	建立全面的、统一的人员基本信息库，包括所有职员与临时人员,并自动与公司数据中心同步。
+（2）实现职员入职数字化管理
+	新员工数据导入与导出：根据人力资源系统导入新员工数据，单个员工数据的增、删、改、查功能，新员工录用岗位的调整及调整日志记录，新员工数据的导出、查询和统计，以及面向员工的的录用查询功能。
+	网上报道：实现设置网上报道时间（由管理员身份进行增、删、改、查）功能、设置新员工须知（由管理员身份进行增、删、改、查）功能、查看员工须知（此功能由新员工查看）功能、选择床位（由新员工选择床位）功能。
+	编制职工号：实现按职工号生成规则批量生成职工号的功能。
+（3）实现职员财务管理数字化
+	入职薪资标准：实现按录用岗位增、删、改、查入职薪资标准的功能。
+	宿舍收费标准：实现按宿舍区域、楼栋、楼层、房间增、删、改、查宿舍收费标准的功能，实现批量操作。
+	员工奖金标准：实现按录用岗位与业绩增、删、改、查员工个人奖金的功能。
+	员工罚金标准：实现按违纪记录增、删、改、查员工罚金的功能。
+	员工个人财务处理：实现所有应收款项目的柜台人工收费处理功能。实现所有应收款项目的网上收费情况的查询、统计和审核功能。实现所有发放资金项目情况的网上查询、统计、审核功能。
+（4）新员工报到管理
+	实现在公司管理网站上缴纳住宿费的功能。
+	实现柜台收取代收费、住宿费功能，并提供收费情况（含网上交费和柜台收费）审核和统计功能。
+	实现管理人员审核职员交费情况并确认报到功能。
+	提供查看报到情况和交费情况统计功能。
+（5）宿舍管理系统升级改造
+	房间管理：
+	实现按楼栋类型批量增、删、改、查房间和床位（包括收费标准和房间资产管理）的功能。
+	实现对已有房间批量（或单个）的增、删、改、查房间收费标准功能。
+	实现对已有房间批量（或单个）的增、删、改、查房间资产和资产清理功能。
+	床位预分：实现按岗位、办公楼层预分床位功能。
+	入住管理：
+	确认职工是否入住职工宿舍的功能。
+	实现职工入住信息的增、删、改、查功能。
+	实现已入住职工床位变更、退宿处理等床位异动处理功能，并支持批量操作。
+	床位预约：实现管理人员人工登记处理职工的床位预约信息功能。
+	调换申请：实现已入住职工网上申请调换床位功能。
+	维护维修：
+	实现职工网上报修、管理员接收的职工电话或现场报修登记功能。
+	实现维修安排功能、维修记录功能、维修回访功能。
+（6）专业培训管理
+	专业培训管理：当前季度可参加专业培训的管理功能，支持培训信息的导入导出。
+	设置参加季度：实现当前报名培训季度的设置功能。
+	设置报名时间：实现报名时间的设置功能。
+	设置培训人：实现根据培训计划增、删、改、查专业培训人的功能。
+	报名培训：实现按录用岗位查找专业培训的功能。
+	培训审核：管理人员对新开放的专业培训的审核功能。
+	培训参加资格审核：管理人员对职工报名专业培训的审核功能。
+（7）离职审核
+	离职职工名册：实现从职工系统中获取因跳槽、退休、死亡等原因离岗的职工名册。
+	退宿审核：实现对房间资产清理情况，审核赔偿资产和金额，并根据离职时间，确定住宿费退款标准的功能。
+	网络用户注销：实现根据离职职工名册，批量注销职工网络账号的功能。
+	补退费审核：实现根据上述单项审核结果，生成离职职工补退费金额汇总审核功能。
+	收费处理：实现由财务人员进行柜台收费功能。
+	退费处理：实现由财务人员退费到职工有效银行卡上的功能。
+	离职审核情况：实现职工在网上查看离职审核情况，执行补交费，查看退费到帐情况的功能。
+（8）职工综合服务管理系统门户
+	提供与本项目相关的为职工提供服务的门户系统。
+	提供与本项目相关的为管理人员提供服务的门户系统。
+5.功能需求：
+
+	SISMS职员信息服务管理系统主要为普通公司职员和特殊管理员提供各自所需要的服务。对于公司职员的普通用户来说，该管理系统可以用于：
+	（1）查看相关的缴费通知
+	（2）查看相关的资金流动
+	（3）查看员工宿舍信息
+	（4）查看培训信息
+
+	而对于管理员这类特殊用户而言，该管理系统可以用于：
+	（1）修改查看员工信息
+	（2）查看新员工信息编制员工号分配宿舍
+	（3）查询公司内部资金流动
+	（4）进行员工的收支处理
+	（5）管理房间信息
+	（6）管理入住信息
+	（7）处理宿舍申请
+	（8）查看培训信息
+	（9）进行培训审定
+	（10）进行培训课程管理
+	（11）管理培训开始时间
+	（12）查看离职员工信息
+	（13）审核培训情况
+	（14）进行角色管理
+	（15）进行编辑公告
+
+2.流程设计
+ 
+3.数据流图
+ 
+4.数据字典
+数据字典：
+数据流编号	数据流名称	简述	数据流来源	数据流去向	数据项组成
+D01	职员信息	普通职员与管理员信息	管理员审核通过入职申请后，将职员信息录入计算机	职员信息模块。职员信息将存入数据库（Staff表）	职工号+姓名+身份证号+性别+部门+是否管理员
+D02	办公室信息	职员被分配到的办公室信息	管理员将公司办公室信息录入计算机	办公室信息模块。管理员将办公室信息存入Office表	办公室号+容纳人数+部门+是否满员
+D03	财务信息	职员财务信息	当财务信息需要发布时由管理员将信息输入计算机	财务管理模块（管理员）	财务编码+资金变化+资金类型+是否完成+发布日期+截止日期
+D04	办公室事务信息	办公室事务信息	职员将办公室事务信息输入至计算机发布至系统	管理员将处理这些信息。办公室事务信息表	事务编号+事务类型+备注+是否已处理
+D05	培训信息	公司培训信息	新培训发布后，由管理员将培训信息输入至计算机	培训课程模块。培训信息存入Course表	培训编号+培训名称+培训时长+是否审核通过
+D06	应聘信息	未入职人员应聘信息	应聘信息接收后，由管理员将应聘信息输入至计算机	应聘信息将由管理员审核	应聘信息编号+应聘人+性别+分组+所属部门
+
+
+5.状态转换图
+ 
+6.界面设计
+6.1 总体风格与页面组织
+主题突出，内容涉及充分满足用户需求，且易于扩展，网页结构清晰合理。页面风格力求沉稳，朴实而不失现代感。整个网站在内容和形式上都能给人以深刻的冲击力。网站设计便于高效、便捷地浏览和使用——连接一目了然，导航清晰，给人简洁明快的感觉和深刻的视觉印象。
+6.1.1登录欢迎页
+登录页采用背景模糊的方式清晰地突出登录框，力求做到大气、简约。
+中间的登录框意义鲜明，用户可以输入自己的帐号和密码，再输入随机的验证码后，即可登录系统。
+ 
+Figure 1 登录欢迎页设计示意图
+6.1.2系统主页
+页面区域划分为4个部分：标题区、导航区、系统信息区、版本信息区，如下图所示。
+1）	标题区：显示系统名称、承载登录选项按钮。
+2）	导航区：简明扼要地展现职员管理系统管理员可进行的操作；
+3）	系统信息区：显示登录信息，图片区域可用作美化和显示公告；
+4）	版本信息区：显示系统版本信息，增加页面的充实度。
+ 
+Figure 2 系统主页区域划分示意图
+
+
+
+
+6.1.3基本信息管理页面
+信息处理页面区域划分为4个部分：左侧导航区、右侧内容区、上方标题区、版本信息区，如下图所示。
+1）	左侧导航区：简明地展现当前事务所处环节及其他可办事务选项；
+2）	右上查询区：放置单个查询框与刷新按钮，功能清晰可见，简约而不失大气。 
+3）	右下信息显示与处理区：简约翔实地展示存放在数据库中的各条数据，操作按钮清晰可见、排列整齐；
+4）	上方标题区：展示显示系统名称、承载登录选项按钮。
+5）	版本信息区：显示系统版本信息，增加页面的充实度。
+  
+Figure 3 基本信息管理页面区域划分示意图
+6.1.4信息编辑页面
+信息编辑页面由基本信息管理页面点击编辑按钮在网页上弹出，界面边缘做黑幕处理突出编辑框，编辑框内信息条例鲜明，易于使用者辨识与操作。
+     
+Figure 4 信息编辑页面示意图
+6.1.5其他页面
+    为了保证整个系统的协调与美观程度，其他信息处理页面与基本信息管理页面风格一致。整体上系统服从简约朴素的设计风格，使得使用者只用起来觉得简便清晰，按钮清楚不突兀，拉近了与系统功能的距离。
+
+
+7.数据库设计
+7.1 概念结构设计
+7.1.1实体与属性
+员工（ID，办公室号，姓名，性别，身份证号，是否在职，项目类型，是否是管理员，离职日期，组号）
+办公室（办公室号、办公室类型、桌子数量、是否满员，类型）
+资金流水（交易号、员工ID、金额、是否支付，截止日期，支付类型，员工姓名）
+办公室申请（申请号、员工ID、申请类型、日期、状态，其他）
+项目（项目号，员工ID，项目名，项目金额）
+培训课程（课程号，课程名，数量，时长，是否审查，需求，发布，学期）
+公告（ID，内容）
+7.1.2全局E-R图
+
+ 
+Figure 2 数据库全局E-R图
+
+7.2 逻辑结构设计
+7.2.1实体间关系转换和关系模式规范化
+实体间关系转换遵循的原则：
+	（1）一个实体转换为一个关系模式，实体的属性就是关系的属性，实体的键就是关系的键。
+	（2）一个联系转换为一个关系模式，与该联系相连的各实体的键以及联系的属性均转换为该关系的属性。
+
+联系关系的键有三种情况：
+	（1）如果联系为1:1，则每个实体的键都是关系的候选键
+	（2）如果联系为1:n，则每个实体的键都是关系的键
+	（3）如果联系为n:m，则各实体的键的组合是关系的键
+	（4）特殊情况：多元联系。多元联系在转换为关系模式时，与该多元联系相连的各实体的主键及联系本身的属性均转换为关系的属性，转换后所得到的的关系的主键为各实体键的组合
+
+实体间关系的转换规则：
+A、一个1:1关系可以转换为一个独立的关系模式，也可以与任意一端所对应的关系模式合并。
+B、一个1:n关系可以转换为一个独立的关系模式，也可以与n端所对应的关系模式合并。
+C、一个m:n关系转换为一个关系模式。转换的方法为：与该关系相连的各实体的码以及关系本身的属性均转换为关系的属性，新关系的码为两个相连实体码的组合。
+D、三个或三个以上实体间的多元关系转换为一个关系模式。
+
+实体间关系转化结果如下：
+员工（ID，办公室号，姓名，性别，身份证号，是否在职，项目类型，是否是管理员，离职日期，组号）——实体表
+办公室（办公室号、办公室类型、桌子数量、是否满员，类型）——实体表
+资金流水（交易号、员工ID、金额、是否支付，截止日期，支付类型，员工姓名）——实体表
+办公室申请（申请号、员工ID、申请类型、日期、状态，其他）——实体表
+项目（项目号，员工ID，项目名，项目金额）——实体表
+培训课程（课程号，课程名，数量，时长，是否审查，需求，发布，学期）——实体表
+公告（ID，内容）——实体表
+
+数据库设计三大范式如下：
+第一范式 每一个分类必须是一个不可分的数据项。属性不可再分，确保每列的原子性。
+	第二范式 要求每个表只描述一件事情，每条记录有唯一标识列。
+	第三范式 数据库表中不包含已在其它表中已包含的非主关键字信息。
+
+实体间关系转化结果符合第三范式，设计符合关系型数据库的基本规范。
+7.3 数据库实施
+SISMS职员信息服务管理系统采用mysql关系型数据库，数据表与表项按逻辑结构设计结果和数据字典设计，映射的java实体类如下。
+7.3.1 Staff员工实体类
+7.3.1.1空构造函数
+a） 功能描述：构造Dining对象。
+b） 设计约束与需求：无特殊要求。
+方法：
+public Staff()
+参数：无。
+返回值：Staff对象。
+异常：无。
+
+7.3.1.2带参数的构造函数
+a） 功能描述：构造Staff对象。
+b） 设计约束与需求：无特殊要求。
+方法：
+public Staff(String staffID,
+           String staffName,
+           String sex,
+           String identifyID，
+String officeNumber，
+boolean onJob，
+String projectKind,
+boolean isAdmin,
+     String leaveDate,
+String groupID,
+Office office,
+List<Project> project);
+参数：
+	staffID – 员工号。
+	staffName – 员工名。
+	sex – 性别。
+	identifyID – 身份证。
+	officeNumber—办公室号。
+	onJob—是否在职。
+	projectKind—项目类型。
+	isAdmin—是否是管理员。
+	leaveDate—离职日期。
+	groupID—组号。
+	office—办公室。
+	project—参与项目。
+返回值：Staff对象。
+异常：无。
+7.3.1.3获取员工各项参数
+a） 功能描述：
+获取对象的各项参数（staffID / staffName / sex / identifyID/ officeNumber/ onJob/ projectKind/ isAdmin/ leaveDate/ groupID/ office/ project）。
+b） 设计约束与需求：无特殊要求。
+方法：public String getStaffID();
+public int getTableNum();
+public String getStaffName();
+public String getSex();
+public String getIdentifyID();
+public String getOfficeNumber();
+public boolean isOnJob();
+public String getProjectKind();
+public boolean isAdmin();
+public String getLeaveDate();
+public String getGroupID();
+public Office getOffice();
+public List<Project> getProject();
+参数：无。
+返回值：员工的各项参数。
+异常：无。
+
+
+7.3.1.4 设置员工各项参数
+a） 功能描述：
+设置对象的各项参数（staffID / staffName / sex / identifyID/ officeNumber/ onJob/ projectKind/ isAdmin/ leaveDate/ groupID/ office/ project）。
+b） 设计约束与需求：无特殊要求。
+方法：
+public void setStaffID(String staffID);
+public void setStaffName(String staffName);
+public void setSex(String sex);
+public void setIdentifyID(String identifyID);
+public void setOfficeNumber(String officeNumber);
+public void setOnJob(boolean onJob);
+public void setProjectKind(String projectKind);
+public void setAdmin(boolean isAdmin);
+public void setLeaveDate(String leaveDate);
+public void setGroupID(String groupID);
+public void setOffice(Office office);
+public void setProject(List<Project> project);
+参数：员工实体各项参数
+返回值：无。
+异常：无。
+7.3.2 Office办公室实体类
+7.3.2.1空构造函数
+a） 功能描述：构造Office对象。
+b） 设计约束与需求：无特殊要求。
+方法：
+public Office()
+参数：无。
+返回值：Office对象。
+异常：无。
+7.3.2.2带参数的构造函数
+a） 功能描述：构造Office对象。
+b） 设计约束与需求：无特殊要求。
+方法：
+public Office(String officeNumber,
+           int officeKind,
+           int tableNumber,
+			  private boolean isFull,
+           private String type)
+参数：
+	 officeNumber – 办公室号。
+	officeKind – 办公室类型。
+	tableNumber – 桌子数量。
+	isFull –是否满员。
+	type – 类型。
+返回值：Office对象。
+异常：无。
+7.3.2.3获取办公室各项参数
+a） 功能描述：
+获取对象的各项参数（officeNumber / officeKind / tableNumber / isFull / type ）。
+b） 设计约束与需求：无特殊要求。
+方法：public String getOfficeNumber();
+public int getOfficeKind();
+public int getTableNumber();
+public boolean isFull();
+public String getType();
+参数：无。
+返回值：办公室的各项参数。
+异常：无。
+7.3.2.4 设置办公室各项参数
+a） 功能描述：
+设置餐桌各项参数（officeNumber / officeKind / tableNumber / isFull / type）。
+b） 设计约束与需求：无特殊要求。
+方法：
+public void setOfficeNumber(String officeNumber);
+public void setOfficeKind(int officeKind);
+public void setTableNumber(int tableNumber);
+public void setFull(boolean isFull);
+public void setType(String type);
+参数：办公室的各项参数
+返回值：无。
+异常：无。
+7.3.3 OfficeApplication办公室申请实体类
+7.3.3.1 空构造函数
+a） 功能描述：构造OfficeApplication对象
+b） 设计约束与需求：无特殊要求。
+方法： 
+public OfficeApplication () ；
+参数：无； 
+返回：一个OfficeApplication实体；
+异常：无；
+7.3.3.2 带参数的构造函数
+a） 功能描述：构造OfficeApplication对象。
+b） 设计约束与需求：无特殊要求。
+方法：
+public OfficeApplication (String applyNumber, 
+String staffID, 
+String applyKind, 
+String other,
+String date,
+boolean status)；
+参数：
+	 applyNumber – 申请号。
+	staffID – 员工号。
+	applyKind– 申请类型。
+	other – 其他。
+	date – 日期。
+	status—状态。
+返回值：OfficeApplication对象。
+异常：无。
+7.3.3.3 获取办公室申请各项参数
+a) 功能描述：
+获取到OfficeApplication实体类的部分属性值（applyNumber \ staffID \ applyKind \ other \ date\ status）
+b) 设计约束和需求：无特殊要求。
+方法：
+public String getApplyNumber()；
+public String getStaffID()；
+public String getApplyKind()；
+public String getOther()；
+public String getDate()；
+public boolean isStatus()；
+参数：无；
+返回：相应的OfficeApplication类的属性
+异常：无。
+7.3.3.4 设置办公室申请各项参数
+a） 功能描述 ：对OfficeApplication实体类的部分属性进行修改或者实例化
+b） 设计约束与需求：无特殊要求。
+方法：
+public void setStaffID(String userName)；
+public void setApplyNumber(String applyNumber)；
+public void setApplyKind(String applyKind)；
+public void setTableId(long tableId)；
+public void setOther(String other)；
+public void setDate(String date)；
+public void setStatus(boolean status)；
+参数：OfficeApplication的各个属性
+返回：一个OfficeApplication实体
+异常;无
+7.3.4 StaffRecord资金流水实体类
+7.3.4.1 空构造函数
+a） 功能描述：构造StaffRecord对象。
+b） 设计约束与需求：无特殊要求。
+方法：
+public StaffRecord（）
+参数：无。
+返回值：无。
+异常：无。
+7.3.4.2 带参的构造函数
+a） 功能描述：通过传入参数构造StaffRecord对象（payNumber/staffID/staffName/payKind/payPrice/deadline/payDate/isPay/check）
+b） 设计约束与需求：无特殊要求。
+方法：
+public StaffRecord (String payNumber, 
+String staffID, 
+String staffName, 
+String payKind, 
+String payPrice
+String deadline,
+String payDate,
+String isPay,
+String check)；
+参数：
+	payNumber:支付号
+	staffID：员工号
+	staffName：员工姓名
+	payKind：支付类型
+	payPrice：价格
+	deadline：截止日期
+	payDate：支付日
+	isPay：是否支付
+	check：确认
+返回值：一个StaffRecord实体
+异常：无
+7.3.4.3 获取资金流水各项参数
+a) 功能描述：获取一个StaffRecord实体的属性值
+b) 设计约束和需求：无特殊要求
+方法：
+public String getPayNumber()；
+public String getStaffID()；
+public String getStaffName()；
+public String getPayKind()；
+public String getPayPrice()；
+public String getDeadline()；
+public String getPayDate()；
+public String getIsPay()；
+public String getCheck()；
+参数：无
+返回：无
+异常：无
+7.3.4.4 设置资金流水各项参数
+a) 功能描述：对一个实体StaffRecord进行属性修改
+b) 设计约束和需求：无特殊要求。
+方法：
+public void setPayNumber(String payNumber)；
+public void setStaffID(String staffID)；
+public void setStaffName(String staffName)；
+public void setPayKind(String payKind)；
+public void setPayPrice(String payPrice)； 
+public void setDeadline(String deadline)；
+public void setPayDate(String payDate)；
+public void setIsPay(String isPay)；
+public void setCheck(String check)；
+参数：StaffRecord的实体对应属性
+返回值：无；
+异常：无；
+7.3.7 Course培训用户实体类
+7.3.7.1空构造函数
+a） 功能描述：构造Course对象。
+b） 设计约束与需求：无特殊要求。
+方法：
+public Course ()
+参数：无。
+返回值：无。
+异常：无。
+7.3.7.2带参数的构造函数
+a） 功能描述：构造Course对象。
+b） 设计约束与需求：无特殊要求。
+方法：
+public Course (String courseNumber,
+           String courseName,
+           int number,
+			  float length,
+			  boolean auditing,
+           int requirement,
+String providing,
+private String semeter)
+	参数：courseNumber – 课程号。
+	courseName– 课程名。
+	number – 数量。
+	length– 时长。
+	auditing – 审核。
+	requirement – 需求。
+	providing—发布。
+	semester—学期。
+返回值：Course对象。
+异常：无。
+
+7.3.7.3获取培训各项参数
+a） 功能描述：
+获取对象的各项参数（courseNumber / courseName/ number / length / auditing / requirement / providing/ semester）。
+b） 设计约束与需求：无特殊要求。
+方法：public String getCourseNumber();
+public String getCourseName();
+public int getNumber();
+public float getLength();
+public boolean isAuditing();
+public int getRequirment();
+public String getProviding();
+public String getSemeter()；
+参数：无。
+返回值：培训的各项参数。
+异常：无。
+7.3.7.4 设置培训各项参数
+a） 功能描述：
+设置餐桌各项参数（courseNumber / courseName/ number / length / auditing / requirement / providing/ semester）。
+b） 设计约束与需求：无特殊要求。
+方法：public void setCourseNumber(String courseNumber);
+public void setCourseName(String courseName);
+public void setNumber(int number);
+public void setLength(float length);
+public void setAuditing(boolean auditing);
+public void setRequirment(int requirment);
+public void setProviding(String providing);
+public void setSemeter(String semeter)；
+参数：培训实体各项参数
+返回值：无。
+异常：无。
+7.3.6 Project项目实体类
+7.3.6.1 空构造函数
+a) 功能描述：构造一个新的Project实体对象
+b) 设计约束与需求：无特殊要求。
+方法：
+public Project ()；
+参数：无
+返回值：一个实例的Project对象
+异常：无
+7.3.6.2 带参数的构造函数
+a) 功能描述：构造一个新的Project实体对象
+b) 设计约束与需求：无特殊要求
+方法：
+public Project(String projectID, String staffID, String projectName, int money ,Staff staff)
+参数：
+	projectID：项目ID
+	staffID：员工ID
+	projectName :项目名
+	money：资金
+	staff：员工
+返回值：一个实例化的Project对象
+异常：无
+
+7.3.6.3 获取项目各项参数
+功能描述：获取该Project实例化对象的相应属性
+设计约束和需求：无特殊要求
+方法：
+public String getProjectID()；
+public String getStaffID()；
+public String getProjectName()；
+public int getMoney()；
+public Staff getStaff()；
+参数：无
+返回值：Project的相应属性值
+异常：无
+
+7.3.6.4 设置项目各项参数
+a) 功能描述：修改该Project实体的部分属性
+b) 设计约束和需求：无特殊要求
+方法：
+public void setProjectID(String projectID) ；
+public void setStaffID(String staffID)；
+public void setProjectName(String projectName)；
+public void setMoney(int money) ；
+public void setStaff(Staff staff)；
+参数：实体的各项属性
+返回值：无
+异常：无
+7.3.6.1 空构造函数
+a) 功能描述：构造一个新的Notice实体对象
+b) 设计约束与需求：无特殊要求。
+方法：
+public Notice ()；
+参数：无
+返回值：一个实例的Notice对象
+异常：无
+7.3.6.2 带参数的构造函数
+a) 功能描述：构造一个新的Notice实体对象
+b) 设计约束与需求：无特殊要求
+方法：
+public Project(String projectID, String staffID, String projectName, int money ,Staff staff)
+参数：
+	projectID：项目ID
+	staffID：员工ID
+	projectName :项目名
+	money：资金
+	staff：员工
+返回值：一个实例化的Project对象
+异常：无
+
+7.3.6.3 获取项目各项参数
+功能描述：获取该Project实例化对象的相应属性
+设计约束和需求：无特殊要求
+方法：
+public String getProjectID()；
+public String getStaffID()；
+public String getProjectName()；
+public int getMoney()；
+public Staff getStaff()；
+参数：无
+返回值：Project的相应属性值
+异常：无
+
+7.3.6.4 设置项目各项参数
+a) 功能描述：修改该Project实体的部分属性
+b) 设计约束和需求：无特殊要求
+方法：
+public void setProjectID(String projectID) ；
+public void setStaffID(String staffID)；
+public void setProjectName(String projectName)；
+public void setMoney(int money) ；
+public void setStaff(Staff staff)；
+参数：实体的各项属性
+返回值：无
+异常：无
+
+
+
+8.接口设计
+SISMS职员信息服务管理系统采用基于Spring4.0的J2EE框架。为每张表建立的单独的DAO工厂接口，该接口提供所有的数据操作包括：新建、删除、更新、SQL查询等，同时注册成Spring的资源库供服务层调用。
+8.1 查询课程
+	功能描述：查询职员参加的培训课程
+	设计约束与需求：无特殊要求
+	方法：List<Course> queryCourse();
+	参数：无
+	返回值：无
+	异常：无
+8.2 增加培训课程
+	功能描述：增加职员参加的培训课程
+	设计约束与需求：无特殊要求
+	方法：void insertCourse(Course course);
+	参数：id：表示需要增加的职员参加的培训课程。
+	返回值：无
+	异常：无
+8.3 删除培训课程
+	功能描述：删除职员参加的培训课程
+	设计约束与需求：无特殊要求
+	方法：void deleteCourse(String courseNumber);
+	参数：id：表示需要删除的职员参加的培训课程。
+	返回值：无
+	异常：无
+8.4 更新培训课程
+	功能描述：更新职员参加的培训课程
+	设计约束与需求：无特殊要求
+	方法：void updateCourse(Course course);
+	参数：id：表示需要更新的职员参加的培训课程。
+	返回值：无
+	异常：无
+8.5 按编号查询培训课程
+	功能描述：按编号查询培训课程
+	设计约束与需求：无特殊要求
+	方法：Course queryCourseBycourseNumber(String courseNumber);
+	参数：courseNumber：表示职员参加的培训课程编号。
+	返回值：无
+	异常：无
+8.6 按名称查询培训课程
+	功能描述：按名称查询培训课程
+	设计约束与需求：无特殊要求
+	方法：List<Course> queryCourseBycourseName(String courseName);
+	参数：courseName：表示职员参加的培训课程名称。
+	返回值：无
+	异常：无
+
+8.7 查询员工离职日期
+	功能描述：查询员工离职日期
+	设计约束与需求：无特殊要求
+	方法：List<Staff> queryStaff(String leaveDate);
+	参数：leaveDate：表示职员离职日期。
+	返回值：无
+	异常：无
+8.8 查询员工借阅目录
+	功能描述：查询员工离职日期
+	设计约束与需求：无特殊要求
+	方法：List<Staff> queryBorrow(String leaveDate);
+	参数：leaveDate：表示职员离职日期。
+	返回值：无
+	异常：无
+8.9 查询员工离职日期
+	功能描述：查询员工离职日期
+	设计约束与需求：无特殊要求
+	方法：List<Staff> queryStaff(String leaveDate);
+	参数：leaveDate：表示职员离职日期。
+	返回值：无
+	异常：无
+
+8.10 按ID查询职员
+	功能描述：按ID查询员工
+	设计约束与需求：无特殊要求
+	方法：Staff queryStaffByID(String staffID);
+	参数：staffID：表示职员ID。
+	返回值：无
+	异常：无
+
+8.11 按ID查询职员借阅目录
+	功能描述：按ID查询职员借阅目录
+	设计约束与需求：无特殊要求
+	方法：Staff queryBorrowByID(String staffID);
+	参数：staffID：表示职员ID。
+	返回值：无
+	异常：无
+8.12 按ID查询职员借阅记录
+	功能描述：按ID查询职员借阅记录
+	设计约束与需求：无特殊要求
+	方法：List<StaffRecord> queryRecordByID(String staffID);
+	参数：staffID：表示职员ID。
+	返回值：无
+	异常：无
+8.13 按姓名查询职员
+	功能描述：按姓名查询员工
+	设计约束与需求：无特殊要求
+	方法：List<Staff> queryStaffBystaffName(String staffName, String leaveDate);
+	参数：staffName,表示职员姓名；leaveDate，表示离职日期。
+	返回值：无
+	异常：无
+8.14 按姓名查询职员借阅记录
+	功能描述：按ID查询员工
+	设计约束与需求：无特殊要求
+	方法：	List<Staff> queryBorrowStaffBystaffName(String staffName, String leaveDate);
+	参数：staffName,表示职员姓名；leaveDate，表示离职日期。
+	返回值：无
+	异常：无
+8.15 新增管理员
+	功能描述：新增管理员
+	设计约束与需求：无特殊要求
+	方法：void insertAdmin(Staff staff);
+	参数：无
+	返回值：无
+	异常：无
+8.16 删除管理员
+	功能描述：删除管理员
+	设计约束与需求：无特殊要求
+	方法：void deleteAdmin(String staffID);
+	参数：无
+	返回值：无
+	异常：无
+8.17 查询管理员
+	功能描述：查询管理员
+	设计约束与需求：无特殊要求
+	方法：List<Staff> queryAdmin();
+	参数：无
+	返回值：无
+	异常：无
+8.18 获取用户信息
+	功能描述：获取用户信息
+	设计约束与需求：无特殊要求
+	方法：boolean isAdmin(String userName);
+	参数：userName，用户名。
+	返回值：无
+	异常：无
+8.19 获取公告
+	功能描述：获取公告
+	设计约束与需求：无特殊要求
+	方法：String getNotice();
+	参数：无
+	返回值：无
+	异常：无
+
+8.20 登录并获取密码
+	功能描述：登录，获取密码
+	设计约束与需求：无特殊要求
+	方法：String login(String userName);
+	参数：无
+	返回值：无
+	异常：无
+
+
+8.21 更新培训课程
+	功能描述：更新职员参加的培训课程
+	设计约束与需求：无特殊要求
+	方法：void updateCourse(Course course);
+	参数：id：表示需要更新的职员参加的培训课程。
+	返回值：无
+	异常：无
+8.22 新增办公室
+	功能描述：新增办公室
+	设计约束与需求：无特殊要求
+	方法：void insertOffice(Office office);
+	参数：office。
+	返回值：无
+	异常：无
+8.23 选择办公室
+	功能描述：新增办公室
+	设计约束与需求：无特殊要求
+	方法：List<Office> selectOffice();
+	参数：无
+	返回值：无
+	异常：无
+8.24 删除办公室
+	功能描述：删除办公室
+	设计约束与需求：无特殊要求
+	方法：void deleteOffice(String officeNumber);
+	参数：officeNumber
+	返回值：无
+	异常：无
+
+8.25 按办公室号获取办公室
+	功能描述：按办公室号获取办公室
+	设计约束与需求：无特殊要求
+	方法：Office queryOfficeByOfficeNumber(String officeNumber);
+	参数：officeNumber
+	返回值：无
+	异常：无
+8.26 按办公室号获取员工列表
+	功能描述：按办公室号获取员工列表
+	设计约束与需求：无特殊要求
+	方法：List<Staff> queryStaffByDrom(String officeNumber);
+	参数：officeNumber
+	返回值：无
+	异常：无
+8.27 按ID获取员工
+	功能描述：按ID获取员工
+	设计约束与需求：无特殊要求
+	方法：Staff getStaffById(String staffID);
+	参数：staffID
+	返回值：无
+	异常：无
+8.28 新增申请
+	功能描述：新增职员提出的申请
+	设计约束与需求：无特殊要求
+	方法：void insertApply(OfficeApplication officeApplication);
+	参数：officeApplication
+	返回值：无
+	异常：无
+8.29 查询申请
+	功能描述：查询职员提出的申请
+	设计约束与需求：无特殊要求
+	方法：List<OfficeApplication> queryApply(String staffID);
+	参数：staffID 
+	返回值：无
+	异常：无
+8.30 更新办公室信息
+	功能描述：删除办公室
+	设计约束与需求：无特殊要求
+	方法：void updateOffice(Office office);
+	参数：office
+	返回值：无
+	异常：无
+8.31 查询所有申请
+	功能描述：查询所有申请
+	设计约束与需求：无特殊要求
+	方法：List<OfficeApplication> queryAllApply();
+	参数：无
+	返回值：无
+	异常：无
+8.32 更新申请
+	功能描述：更新申请
+	设计约束与需求：无特殊要求
+	方法：void updateApply(String applyNumber);
+	参数：applyNumber
+	返回值：无
+	异常：无
+
+8.33 获取员工记录
+	功能描述：获取员工记录
+	设计约束与需求：无特殊要求
+	方法：List<StaffRecord> getStaffRecordList(String staffID);
+	参数：staffID
+	返回值：无
+	异常：无
+8.34 根据员工号查询交易记录
+	功能描述：更新申请
+	设计约束与需求：无特殊要求
+	方法： 	List<StaffRecord> queryStaffRecordByStaffId(String check);
+	参数：check，表示交易记录
+	返回值：无
+	异常：无
+8.35将缴费添加到交易记录
+	功能描述：点击缴费后从缴费通知中删除，添加到交易记录中
+	设计约束与需求：无特殊要求
+	方法：void updateStaffRecordByKey(String key);
+	参数：key
+	返回值：无
+	异常：无
+
+9.算法设计
+9.1员工宿舍收费计算
+员工宿舍收费的总价是由员工的数量决定的。住宿舍的员工数量越多，收取的住宿费用也就越多。
+住宿费总价：totP。
+一张床位的费用：P
+员工数量：num。
+  
+
